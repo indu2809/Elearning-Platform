@@ -48,17 +48,27 @@ Input validation for forms
 Secure file upload handling
 Session-based authentication
 
-📁 Project Structure
+ 📁 Project Structure
 
+```plaintext
 UPSKILL/
 │── app.py
-│── templates/
-│── static/
-│   ├── uploads/
-│   │   ├── videos/
-│   │   ├── images/
-│── database/
 │── README.md
+│
+├── templates/
+│   ├── signup.html
+│   ├── student_dashboard.html
+│   ├── upload_course.html
+│   ├── upload_lesson.html
+│   ├── upload_product.html
+│
+├── static/
+│   ├── css/
+│   │   └── style.css
+│   │
+│   └── uploads/
+│       ├── products/
+│       └── videos/
 
 🧪 Testing
 
