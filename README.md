@@ -1,6 +1,6 @@
 # Elearning-Platform
 
-Extracurricular Elearning Platform with RoUPSKILL – Skill-Based E-Learning Platform
+Extracurricular Elearning Platform with UPSKILL – Skill-Based E-Learning Platform
 
 📌 Project Overview
 
