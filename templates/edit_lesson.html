@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Lesson - UPSKILL</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}" class="nav-logo">UPSKILL</a>
+            <ul class="nav-menu">
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('instructor_dashboard') }}">Dashboard</a></li>
+                <li><a href="{{ url_for('course_detail', course_id=lesson.course_id) }}">Back to Course</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="container">
+        <div class="form-container">
+            <h1>Edit Lesson: {{ lesson.title }}</h1>
+            <p>Course: {{ lesson.course_title }}</p>
+            <form method="POST" action="{{ url_for('edit_lesson', lesson_id=lesson.id) }}" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="title">Lesson Title</label>
+                    <input type="text" id="title" name="title" value="{{ lesson.title }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="video">Replace Video (Optional - leave empty to keep current video)</label>
+                    <input type="file" id="video" name="video" accept=".mp4,.avi,.mov,.mkv">
+                    <small>Current video: {{ lesson.video_path }}</small>
+                    <small>Maximum file size: 500MB</small>
+                </div>
+                <button type="submit" class="btn-primary">Update Lesson</button>
+                <a href="{{ url_for('course_detail', course_id=lesson.course_id) }}" class="btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 UPSKILL. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

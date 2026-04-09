@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - UPSKILL</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}" class="nav-logo">UPSKILL</a>
+            <ul class="nav-menu">
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('courses') }}">Courses</a></li>
+                <li><a href="{{ url_for('products') }}">Products</a></li>
+                <li><a href="{{ url_for('about') }}" class="active">About</a></li>
+                {% if session.user_id %}
+                    {% if session.role == 'student' %}
+                        <li><a href="{{ url_for('student_dashboard') }}">Dashboard</a></li>
+                    {% elif session.role == 'instructor' %}
+                        <li><a href="{{ url_for('instructor_dashboard') }}">Dashboard</a></li>
+                    {% endif %}
+                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                    <li><a href="{{ url_for('signup') }}" class="btn-primary">Sign Up</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <div class="container">
+            <h1>About UPSKILL</h1>
+            <p>Empowering creativity through online learning</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="about-content">
+            <section class="about-section">
+                <h2>Our Mission</h2>
+                <p>UPSKILL is dedicated to making extracurricular and artistic education accessible to everyone. We believe that learning creative skills should be easy, enjoyable, and available to all, regardless of location or schedule.</p>
+            </section>
+
+            <section class="about-section">
+                <h2>What We Offer</h2>
+                <p>Our platform connects passionate instructors with eager learners across a wide range of disciplines including Mehendi Design, Aari Work, Bridal Makeup, Hair Styling, Baking, Crochet, Painting, Handicrafts, Calligraphy, Jewelry Making, and more.</p>
+            </section>
+
+            <section class="about-section">
+                <h2>For Students</h2>
+                <p>Browse through our extensive course library, enroll in classes that interest you, and learn at your own pace through high-quality video lessons. Whether you're a complete beginner or looking to refine your skills, we have courses for every level.</p>
+            </section>
+
+            <section class="about-section">
+                <h2>For Instructors</h2>
+                <p>Share your expertise with students worldwide. Create courses, upload lessons, and even sell your handcrafted products through our marketplace. Build your brand and grow your business while doing what you love.</p>
+            </section>
+
+            <section class="about-section">
+                <h2>Artisan Marketplace</h2>
+                <p>Our unique marketplace feature allows instructors to showcase and sell their handcrafted products directly to students and art enthusiasts. Connect with talented artisans and purchase authentic, handmade items.</p>
+            </section>
+
+            <section class="about-section">
+                <h2>Get Started Today</h2>
+                <p>Join our growing community of creative learners and instructors. Whether you want to learn a new skill or share your expertise, UPSKILL is here to support your journey.</p>
+                <div class="cta-buttons">
+                    <a href="{{ url_for('courses') }}" class="btn-primary">Browse Courses</a>
+                    <a href="{{ url_for('signup') }}" class="btn-secondary">Sign Up Now</a>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 UPSKILL. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - UPSKILL</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}" class="nav-logo">UPSKILL</a>
+            <ul class="nav-menu">
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('courses') }}">Courses</a></li>
+                <li><a href="{{ url_for('products') }}" class="active">Products</a></li>
+                <li><a href="{{ url_for('about') }}">About</a></li>
+                {% if session.user_id %}
+                    {% if session.role == 'student' %}
+                        <li><a href="{{ url_for('student_dashboard') }}">Dashboard</a></li>
+                    {% elif session.role == 'instructor' %}
+                        <li><a href="{{ url_for('instructor_dashboard') }}">Dashboard</a></li>
+                    {% endif %}
+                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                    <li><a href="{{ url_for('signup') }}" class="btn-primary">Sign Up</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="page-header">
+        <div class="container">
+            <h1>Artisan Marketplace</h1>
+            <p>Handcrafted products from talented instructors</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="products-grid">
+            {% for product in products %}
+                <div class="product-card">
+                    {% if product.first_image %}
+                        <img src="{{ url_for('static', filename=product.first_image) }}" alt="{{ product.name }}" class="product-image">
+                    {% else %}
+                        <div class="product-image-placeholder">No Image</div>
+                    {% endif %}
+                    <div class="product-info">
+                        <span class="category-badge">{{ product.category }}</span>
+                        <h3>{{ product.name }}</h3>
+                        <p class="product-price">₹{{ product.price }}</p>
+                        <p class="product-seller">By {{ product.seller_name }}</p>
+                        <a href="{{ url_for('product_detail', product_id=product.id) }}" class="btn-primary">View Details</a>
+                    </div>
+                </div>
+            {% else %}
+                <p class="no-data">No products available yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+<br><br><br><br><br><BR></BR>
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 UPSKILL. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Product - UPSKILL</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}" class="nav-logo">UPSKILL</a>
+            <ul class="nav-menu">
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('instructor_dashboard') }}">Back to Dashboard</a></li>
+                <li><a href="{{ url_for('products') }}">Products</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="container">
+        <div class="form-container">
+            <h1>Edit Product</h1>
+            
+            <div class="current-images">
+                <h3>Current Images</h3>
+                <div class="image-gallery-edit">
+                    {% for image in images %}
+                        <div class="image-item">
+                            <img src="{{ url_for('static', filename=image.image_path) }}" alt="Product Image">
+                            <a href="{{ url_for('delete_product_image', image_id=image.id, product_id=product.id) }}" class="btn-danger btn-small" onclick="return confirm('Delete this image?')">Delete</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <form method="POST" action="{{ url_for('edit_product', product_id=product.id) }}" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="name">Product Name</label>
+                    <input type="text" id="name" name="name" value="{{ product.name }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Product Description</label>
+                    <textarea id="description" name="description" rows="5" required>{{ product.description }}</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category" name="category" required>
+                        {% for cat in categories %}
+                            <option value="{{ cat }}" {% if product.category == cat %}selected{% endif %}>{{ cat }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group" id="customCategoryGroup" style="{% if product.category not in categories %}display: block;{% else %}display: none;{% endif %}">
+                    <label for="custom_category">Custom Category</label>
+                    <input type="text" id="custom_category" name="custom_category" value="{% if product.category not in categories %}{{ product.category }}{% endif %}">
+                </div>
+                <div class="form-group">
+                    <label for="price">Price (₹)</label>
+                    <input type="text" id="price" name="price" value="{{ product.price }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="contact_email">Contact Email</label>
+                    <input type="email" id="contact_email" name="contact_email" value="{{ product.contact_email }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="contact_phone">Contact Phone (10 digits)</label>
+                    <input type="tel" id="contact_phone" name="contact_phone" pattern="[0-9]{10}" maxlength="10" value="{{ product.contact_phone }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="images">Add More Images (Optional)</label>
+                    <input type="file" id="images" name="images" accept=".png,.jpg,.jpeg,.gif" multiple>
+                    <small>You can select multiple images to add</small>
+                </div>
+                <button type="submit" class="btn-primary">Update Product</button>
+                <a href="{{ url_for('instructor_dashboard') }}" class="btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 UPSKILL. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('category').addEventListener('change', function() {
+            const customGroup = document.getElementById('customCategoryGroup');
+            if (this.value === 'Other Course') {
+                customGroup.style.display = 'block';
+            } else {
+                customGroup.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

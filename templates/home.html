@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UPSKILL - Extracurricular & Arts E-Learning</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}" class="nav-logo">UPSKILL</a>
+            <ul class="nav-menu">
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('courses') }}">Courses</a></li>
+                <li><a href="{{ url_for('products') }}">Products</a></li>
+                <li><a href="{{ url_for('about') }}">About</a></li>
+                {% if session.user_id %}
+                    {% if session.role == 'student' %}
+                        <li><a href="{{ url_for('student_dashboard') }}">Dashboard</a></li>
+                    {% elif session.role == 'instructor' %}
+                        <li><a href="{{ url_for('instructor_dashboard') }}">Dashboard</a></li>
+                    {% elif session.role == 'admin' %}
+                        <li><a href="{{ url_for('admin_dashboard') }}">Admin Panel</a></li>
+                    {% endif %}
+                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                    <li><a href="{{ url_for('signup') }}" class="btn-primary">Sign Up</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Learn Arts & Extracurricular Skills Online</h1>
+            <p>Master Mehendi, Aari Work, Baking, Painting, and more from expert instructors</p>
+            <div class="hero-buttons">
+                <a href="{{ url_for('courses') }}" class="btn-primary btn-large">Explore Courses</a>
+                <a href="{{ url_for('signup') }}" class="btn-secondary btn-large">Get Started</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <h2>Why Choose UPSKILL?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📚</div>
+                    <h3>Expert Instructors</h3>
+                    <p>Learn from skilled professionals with years of experience in their craft</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎥</div>
+                    <h3>Video Lessons</h3>
+                    <p>High-quality video tutorials you can watch anytime, anywhere</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🛍️</div>
+                    <h3>Artisan Marketplace</h3>
+                    <p>Buy handcrafted products directly from talented instructors</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⭐</div>
+                    <h3>Diverse Skills</h3>
+                    <p>Choose from a wide range of extracurricular and artistic courses</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <h2>Ready to Start Learning?</h2>
+            <p>Join thousands of students learning new skills every day</p>
+            <a href="{{ url_for('signup') }}" class="btn-primary btn-large">Sign Up Now</a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 UPSKILL. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

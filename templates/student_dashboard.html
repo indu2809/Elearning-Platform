@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - UPSKILL</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}" class="nav-logo">UPSKILL</a>
+            <ul class="nav-menu">
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('courses') }}">Courses</a></li>
+                <li><a href="{{ url_for('products') }}">Products</a></li>
+                <li><a href="{{ url_for('about') }}">About</a></li>
+                <li><a href="{{ url_for('student_dashboard') }}" class="active">Dashboard</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="page-header">
+        <div class="container">
+            <h1>Welcome, {{ session.name }}</h1>
+            <p>Your Learning Dashboard</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="dashboard-stats">
+            <div class="stat-card">
+                <div class="stat-number">{{ total_enrollments }}</div>
+                <div class="stat-label">Courses Enrolled</div>
+            </div>
+        </div>
+
+        <div class="dashboard-section">
+            <h2>My Enrolled Courses</h2>
+            {% if enrolled_courses %}
+                <div class="courses-grid">
+                    {% for course in enrolled_courses %}
+                        <div class="event-card">
+                            <div class="card-header">
+                                <span class="category-badge">{{ course.category }}</span>
+                            </div>
+                            <h3>{{ course.title }}</h3>
+                            <p class="description">{{ course.description[:100] }}{% if course.description|length > 100 %}...{% endif %}</p>
+                            <div class="card-meta">
+                                <p><strong>Instructor:</strong> {{ course.instructor_name }}</p>
+                            </div>
+                            <a href="{{ url_for('course_detail', course_id=course.id) }}" class="btn-primary">Continue Learning</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <p>You haven't enrolled in any courses yet.</p>
+                    <a href="{{ url_for('courses') }}" class="btn-primary">Browse Courses</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 UPSKILL. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

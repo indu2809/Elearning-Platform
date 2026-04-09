@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - UPSKILL</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}" class="nav-logo">UPSKILL</a>
+            <ul class="nav-menu">
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('courses') }}">Courses</a></li>
+                <li><a href="{{ url_for('products') }}">Products</a></li>
+                <li><a href="{{ url_for('about') }}">About</a></li>
+                <li><a href="{{ url_for('login') }}">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="auth-container">
+        <div class="auth-card">
+            <h2>Create Your Account</h2>
+            <form method="POST" action="{{ url_for('signup') }}" id="signupForm">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label for="role">I want to</label>
+                    <select id="role" name="role" required>
+                        <option value="student">Learn (Student)</option>
+                        <option value="instructor">Teach (Instructor)</option>
+                    </select>
+                </div>
+                <div class="form-group" id="phoneGroup" style="display: none;">
+                    <label for="phone">Phone Number (10 digits)</label>
+                    <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" maxlength="10">
+                    <small>Required for instructors</small>
+                </div>
+                <button type="submit" class="btn-primary btn-full">Sign Up</button>
+            </form>
+            <p class="auth-link">Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 UPSKILL. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('role').addEventListener('change', function() {
+            const phoneGroup = document.getElementById('phoneGroup');
+            const phoneInput = document.getElementById('phone');
+            if (this.value === 'instructor') {
+                phoneGroup.style.display = 'block';
+                phoneInput.required = true;
+            } else {
+                phoneGroup.style.display = 'none';
+                phoneInput.required = false;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.name }} - UPSKILL</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}" class="nav-logo">UPSKILL</a>
+            <ul class="nav-menu">
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('courses') }}">Courses</a></li>
+                <li><a href="{{ url_for('products') }}">Back to Products</a></li>
+                <li><a href="{{ url_for('about') }}">About</a></li>
+                {% if session.user_id %}
+                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="product-detail">
+            <div class="product-gallery">
+                {% if images %}
+                    <div class="main-image">
+                        <img src="{{ url_for('static', filename=images[0].image_path) }}" alt="{{ product.name }}" id="mainImage">
+                    </div>
+                    {% if images|length > 1 %}
+                        <div class="thumbnail-gallery">
+                            {% for image in images %}
+                                <img src="{{ url_for('static', filename=image.image_path) }}" alt="{{ product.name }}" class="thumbnail" onclick="changeImage(this.src)">
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <div class="product-image-placeholder">No Images Available</div>
+                {% endif %}
+            </div>
+
+            <div class="product-details">
+                <span class="category-badge">{{ product.category }}</span>
+                <h1>{{ product.name }}</h1>
+                <div class="product-price-large">₹{{ product.price }}</div>
+                
+                <div class="product-description">
+                    <h3>Description</h3>
+                    <p>{{ product.description }}</p>
+                </div>
+
+                <div class="seller-info">
+                    <h3>Seller Information</h3>
+                    <p><strong>Name:</strong> {{ product.seller_name }}</p>
+                    <p><strong>Email:</strong> <a href="mailto:{{ product.contact_email }}">{{ product.contact_email }}</a></p>
+                    <p><strong>Phone:</strong> <a href="tel:{{ product.contact_phone }}">{{ product.contact_phone }}</a></p>
+                </div>
+
+                <div class="contact-actions">
+                    <a href="mailto:{{ product.contact_email }}" class="btn-primary">Contact via Email</a>
+                    <a href="tel:{{ product.contact_phone }}" class="btn-secondary">Call Seller</a>
+                </div>
+
+                {% if is_owner %}
+                    <div class="owner-actions">
+                        <a href="{{ url_for('edit_product', product_id=product.id) }}" class="btn-secondary">Edit Product</a>
+                        <a href="{{ url_for('instructor_delete_product', product_id=product.id) }}" class="btn-danger" onclick="return confirm('Are you sure you want to delete this product?')">Delete Product</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 UPSKILL. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        function changeImage(src) {
+            document.getElementById('mainImage').src = src;
+        }
+    </script>
+</body>
+</html>
